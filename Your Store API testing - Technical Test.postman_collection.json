@@ -1,0 +1,2281 @@
+{
+	"info": {
+		"_postman_id": "924e69e8-4dd1-404d-8899-dc54330963cb",
+		"name": "Your Store API testing - Technical Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17571035"
+	},
+	"item": [
+		{
+			"name": "All Fake Store Endpoints",
+			"item": [
+				{
+					"name": "Login",
+					"item": [
+						{
+							"name": "Login User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Validate login response and save token\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"    \r",
+											"    let jsonData = pm.response.json();\r",
+											"    \r",
+											"    \r",
+											"    pm.expect(jsonData).to.have.property(\"token\");\r",
+											"    pm.expect(jsonData.token).to.be.a(\"string\").and.to.not.be.empty;\r",
+											"    \r",
+											"    \r",
+											"    pm.environment.set(\"auth_token\", jsonData.token);\r",
+											"    \r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"{{user1_username}}\",\r\n    \"password\": \"{{user1_password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Products",
+					"item": [
+						{
+							"name": "Add/Update/delete Products",
+							"item": [
+								{
+									"name": "Post new product",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"let productsResponseData = pm.response.json()\r",
+													"\r",
+													"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"    pm.response.to.be.json;\r",
+													"\r",
+													"    pm.expect(productsResponseData).to.be.an('object');\r",
+													"        pm.expect(productsResponseData).to.have.property(\"id\").that.is.a(\"number\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"title\").that.is.a(\"string\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"price\").that.is.a(\"number\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"description\").that.is.a(\"string\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"category\").that.is.a(\"string\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"image\").that.is.a(\"string\");\r",
+													"});\r",
+													"\r",
+													"var uuid = productsResponseData.id;\r",
+													"\r",
+													"// environment variable\"\r",
+													"pm.environment.set('createdProductId', uuid);\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"title\": \"test product\",\r\n    \"price\": 13.5,\r\n    \"description\": \"lorem ipsum set\",\r\n    \"image\": \"https://i.pravatar.cc\",\r\n    \"category\": \"electronic\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/products",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"products"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update product",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"let productsResponseData = pm.response.json()\r",
+													"\r",
+													"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"    pm.response.to.be.json;\r",
+													"\r",
+													"    pm.expect(productsResponseData).to.be.an('object');\r",
+													"        pm.expect(productsResponseData).to.have.property(\"id\").that.is.a(\"number\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"title\").that.is.a(\"string\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"price\").that.is.a(\"number\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"description\").that.is.a(\"string\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"category\").that.is.a(\"string\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"image\").that.is.a(\"string\");\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"title\": \"test product\",\r\n    \"price\": 13.5,\r\n    \"description\": \"lorem ipsum set\",\r\n    \"image\": \"https://i.pravatar.cc\",\r\n    \"category\": \"electronic\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/products/{{createdProductId}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"products",
+												"{{createdProductId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete product",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"The Status returned code should be 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/products/{{createdProductId}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"products",
+												"{{createdProductId}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get All products",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let productsResponseData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"    pm.expect(productsResponseData).to.be.an('array');\r",
+											"    pm.expect(productsResponseData.length).to.be.greaterThan(0);\r",
+											"\r",
+											"    productsResponseData.forEach(item => {\r",
+											"        pm.expect(item).to.be.an('object');\r",
+											"        pm.expect(item).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"title\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"price\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"description\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"category\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"image\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"rating\").that.is.an(\"object\");\r",
+											"\r",
+											"        pm.expect(item.rating).to.have.property(\"rate\").that.is.a(\"number\");\r",
+											"        pm.expect(item.rating).to.have.property(\"count\").that.is.a(\"number\");\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/products",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get product Results by limits",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let productsResponseData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"    pm.expect(productsResponseData).to.be.an('array');\r",
+											"    pm.expect(productsResponseData.length).to.be.greaterThan(0);\r",
+											"\r",
+											"    productsResponseData.forEach(item => {\r",
+											"        pm.expect(item).to.be.an('object');\r",
+											"        pm.expect(item).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"title\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"price\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"description\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"category\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"image\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"rating\").that.is.an(\"object\");\r",
+											"\r",
+											"        pm.expect(item.rating).to.have.property(\"rate\").that.is.a(\"number\");\r",
+											"        pm.expect(item.rating).to.have.property(\"count\").that.is.a(\"number\");\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"limits\", Math.floor(Math.random() * 7) + 1);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/products?limist={{limits}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "limist",
+											"value": "{{limits}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get product by limits & asc Sort",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let productsResponseData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"    pm.expect(productsResponseData).to.be.an('array');\r",
+											"    pm.expect(productsResponseData.length).to.be.greaterThan(0);\r",
+											"\r",
+											"    productsResponseData.forEach(item => {\r",
+											"        pm.expect(item).to.be.an('object');\r",
+											"        pm.expect(item).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"title\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"price\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"description\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"category\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"image\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"rating\").that.is.an(\"object\");\r",
+											"\r",
+											"        pm.expect(item.rating).to.have.property(\"rate\").that.is.a(\"number\");\r",
+											"        pm.expect(item.rating).to.have.property(\"count\").that.is.a(\"number\");\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"limits\", Math.floor(Math.random() * 7) + 1);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/products?limist={{limits}}&sort={{asc-sort}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "limist",
+											"value": "{{limits}}"
+										},
+										{
+											"key": "sort",
+											"value": "{{asc-sort}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get product by limits & desc Sort",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let productsResponseData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"    pm.expect(productsResponseData).to.be.an('array');\r",
+											"    pm.expect(productsResponseData.length).to.be.greaterThan(0);\r",
+											"\r",
+											"    productsResponseData.forEach(item => {\r",
+											"        pm.expect(item).to.be.an('object');\r",
+											"        pm.expect(item).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"title\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"price\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"description\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"category\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"image\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"rating\").that.is.an(\"object\");\r",
+											"\r",
+											"        pm.expect(item.rating).to.have.property(\"rate\").that.is.a(\"number\");\r",
+											"        pm.expect(item.rating).to.have.property(\"count\").that.is.a(\"number\");\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"limits\", Math.floor(Math.random() * 7) + 1);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/products?limist={{limits}}&sort={{desc-sort}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "limist",
+											"value": "{{limits}}"
+										},
+										{
+											"key": "sort",
+											"value": "{{desc-sort}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All categories",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"The Status returned code should be 200 and contains an array of Categories\", function () {\r",
+											"    pm.response.to.have.status(200); \r",
+											"    pm.response.to.be.json; \r",
+											"\r",
+											"    let jsonData = pm.response.json();\r",
+											"\r",
+											"    pm.expect(jsonData).to.be.an('array');\r",
+											"    pm.expect(jsonData.length).to.be.greaterThan(0);\r",
+											"\r",
+											"    jsonData.forEach(category => {\r",
+											"        pm.expect(category).to.be.a(\"string\");\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Create env variable for each category and count total categories\", function () {\r",
+											"    pm.response.to.have.status(200); \r",
+											"    pm.response.to.be.json; \r",
+											"\r",
+											"    let jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData).to.be.an('array');\r",
+											"\r",
+											"    jsonData.forEach((category, index) => {\r",
+											"        pm.environment.set(`category_${category}`, category);\r",
+											"    });\r",
+											"\r",
+											"    pm.environment.set(\"total_categories\", jsonData.length);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/products/categories",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get products in Electronics Category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"The Status returned code should be 200 and contains an array of Categories\", function () {\r",
+											"    pm.response.to.have.status(200); \r",
+											"    pm.response.to.be.json; \r",
+											"\r",
+											"    let jsonData = pm.response.json();\r",
+											"\r",
+											"    pm.expect(jsonData).to.be.an('array');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/products/category/{{category_electronics}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products",
+										"category",
+										"{{category_electronics}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Cart",
+					"item": [
+						{
+							"name": "Add/Update/delete Carts",
+							"item": [
+								{
+									"name": "Add a new product",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"let cartsResponseData = pm.response.json()\r",
+													"\r",
+													"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"    pm.response.to.be.json;\r",
+													"\r",
+													"        pm.expect(cartsResponseData).to.be.an('object');\r",
+													"        pm.expect(cartsResponseData).to.have.property(\"id\").that.is.a(\"number\");\r",
+													"        pm.expect(cartsResponseData).to.have.property(\"date\").that.is.a(\"string\");\r",
+													"        pm.expect(cartsResponseData).to.have.property(\"products\").that.is.an(\"array\");\r",
+													"        pm.expect(cartsResponseData).to.have.property(\"userId\").that.is.a(\"number\");\r",
+													"});\r",
+													"\r",
+													"var uuid = cartsResponseData.id;\r",
+													"\r",
+													"pm.environment.set('createdProductsInCartId', uuid);\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"userId\": 5,\r\n    \"date\": \"2020-02-03\",\r\n    \"products\": [\r\n        {\r\n            \"productId\": 5,\r\n            \"quantity\": 1\r\n        },\r\n        {\r\n            \"productId\": 1,\r\n            \"quantity\": 5\r\n        }\r\n    ]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/carts",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"carts"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Carts",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"let cartsResponseData = pm.response.json()\r",
+													"\r",
+													"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"    pm.response.to.be.json;\r",
+													"\r",
+													"        pm.expect(cartsResponseData).to.be.an('object');\r",
+													"        pm.expect(cartsResponseData).to.have.property(\"id\").that.is.a(\"number\");\r",
+													"        pm.expect(cartsResponseData).to.have.property(\"date\").that.is.a(\"string\");\r",
+													"        pm.expect(cartsResponseData).to.have.property(\"products\").that.is.an(\"array\");\r",
+													"        pm.expect(cartsResponseData).to.have.property(\"userId\").that.is.a(\"number\");\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"userId\": 5,\r\n    \"date\": \"2020-02-03\",\r\n    \"products\": [\r\n        {\r\n            \"productId\": 5,\r\n            \"quantity\": 1\r\n        },\r\n        {\r\n            \"productId\": 1,\r\n            \"quantity\": 5\r\n        }\r\n    ]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/carts/{{createdProductsInCartId}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"carts",
+												"{{createdProductsInCartId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Cart",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"let cartsResponseData = pm.response.json()\r",
+													"\r",
+													"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/carts/{{createdProductsInCartId}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"carts",
+												"{{createdProductsInCartId}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get All Carts",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let cartsResponseData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"    pm.expect(cartsResponseData).to.be.an('array');\r",
+											"    pm.expect(cartsResponseData.length).to.be.greaterThan(0);\r",
+											"\r",
+											"    cartsResponseData.forEach(item => {\r",
+											"        pm.expect(item).to.be.an('object');\r",
+											"        pm.expect(item).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"date\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"products\").that.is.an(\"array\");\r",
+											"        pm.expect(item).to.have.property(\"__v\").that.is.a(\"number\");\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/carts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"carts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a Single Cart ( 1 to 5 )",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let cartsResponseData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"        pm.expect(cartsResponseData).to.be.an('object');\r",
+											"        pm.expect(cartsResponseData).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(cartsResponseData).to.have.property(\"date\").that.is.a(\"string\");\r",
+											"        pm.expect(cartsResponseData).to.have.property(\"products\").that.is.an(\"array\");\r",
+											"        pm.expect(cartsResponseData).to.have.property(\"__v\").that.is.a(\"number\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"randomNumber\", Math.floor(Math.random() * 5) + 1);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/carts/{{randomNumber}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"carts",
+										"{{randomNumber}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get carts Results by limits",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let cartsResponseData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"    pm.expect(cartsResponseData).to.be.an('array');\r",
+											"    pm.expect(cartsResponseData.length).to.be.greaterThan(0);\r",
+											"\r",
+											"    cartsResponseData.forEach(item => {\r",
+											"        pm.expect(item).to.be.an('object');\r",
+											"        pm.expect(item).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"date\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"products\").that.is.an(\"array\");\r",
+											"        pm.expect(item).to.have.property(\"__v\").that.is.a(\"number\");\r",
+											"    });\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"limits\", Math.floor(Math.random() * 7) + 1);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/carts?limist={{limits}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"carts"
+									],
+									"query": [
+										{
+											"key": "limist",
+											"value": "{{limits}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Cart by limits & asc Sort",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let cartsResponseData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"    pm.expect(cartsResponseData).to.be.an('array');\r",
+											"    pm.expect(cartsResponseData.length).to.be.greaterThan(0);\r",
+											"\r",
+											"    cartsResponseData.forEach(item => {\r",
+											"        pm.expect(item).to.be.an('object');\r",
+											"        pm.expect(item).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"date\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"products\").that.is.an(\"array\");\r",
+											"        pm.expect(item).to.have.property(\"__v\").that.is.a(\"number\");\r",
+											"    });\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"limits\", Math.floor(Math.random() * 7) + 1);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/carts?limist={{limits}}&sort={{asc-sort}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"carts"
+									],
+									"query": [
+										{
+											"key": "limist",
+											"value": "{{limits}}"
+										},
+										{
+											"key": "sort",
+											"value": "{{asc-sort}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get carts by limits & desc sort",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let cartsResponseData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"    pm.expect(cartsResponseData).to.be.an('array');\r",
+											"    pm.expect(cartsResponseData.length).to.be.greaterThan(0);\r",
+											"\r",
+											"    cartsResponseData.forEach(item => {\r",
+											"        pm.expect(item).to.be.an('object');\r",
+											"        pm.expect(item).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"date\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"products\").that.is.an(\"array\");\r",
+											"        pm.expect(item).to.have.property(\"__v\").that.is.a(\"number\");\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"limits\", Math.floor(Math.random() * 7) + 1);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/carts?limist={{limits}}&sort={{desc-sort}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"carts"
+									],
+									"query": [
+										{
+											"key": "limist",
+											"value": "{{limits}}"
+										},
+										{
+											"key": "sort",
+											"value": "{{desc-sort}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Carts in date range",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let cartsResponseData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"    pm.expect(cartsResponseData).to.be.an('array');\r",
+											"    pm.expect(cartsResponseData.length).to.be.greaterThan(0);\r",
+											"\r",
+											"    cartsResponseData.forEach(item => {\r",
+											"        pm.expect(item).to.be.an('object');\r",
+											"        pm.expect(item).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"date\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"products\").that.is.an(\"array\");\r",
+											"        pm.expect(item).to.have.property(\"__v\").that.is.a(\"number\");\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/carts?startdate=2019-12-10&enddate=2020-10-10",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"carts"
+									],
+									"query": [
+										{
+											"key": "startdate",
+											"value": "2019-12-10"
+										},
+										{
+											"key": "enddate",
+											"value": "2020-10-10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get user carts",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let cartsResponseData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"    pm.expect(cartsResponseData).to.be.an('array');\r",
+											"    pm.expect(cartsResponseData.length).to.be.greaterThan(0);\r",
+											"\r",
+											"    cartsResponseData.forEach(item => {\r",
+											"        pm.expect(item).to.be.an('object');\r",
+											"        pm.expect(item).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"userId\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"date\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"products\").that.is.an(\"array\");\r",
+											"        pm.expect(item).to.have.property(\"__v\").that.is.a(\"number\");\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"limits\", Math.floor(Math.random() * 7) + 1);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/carts/user/2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"carts",
+										"user",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "add/Update/delete Users",
+							"item": [
+								{
+									"name": "Add new User",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"let createdUser = pm.response.json()\r",
+													"pm.test(\"Validate Users response Structure\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"    pm.response.to.be.json;\r",
+													"\r",
+													"    let jsonData = pm.response.json();\r",
+													"\r",
+													"        pm.expect(jsonData).to.have.property(\"id\").that.is.a(\"number\");\r",
+													"});\r",
+													"\r",
+													"var uuid = createdUser.id;\r",
+													"\r",
+													"pm.environment.set('createdUser', uuid);\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"John@gmail.com\",\r\n    \"username\": \"johnd\",\r\n    \"password\": \"m38rmF$\",\r\n    \"name\": {\r\n        \"firstname\": \"John\",\r\n        \"lastname\": \"Doe\"\r\n    },\r\n    \"address\": {\r\n        \"city\": \"kilcoole\",\r\n        \"street\": \"7835 new road\",\r\n        \"number\": 3,\r\n        \"zipcode\": \"12926-3874\",\r\n        \"geolocation\": {\r\n            \"lat\": \"-37.3159\",\r\n            \"long\": \"81.1496\"\r\n        }\r\n    },\r\n    \"phone\": \"1-570-236-7033\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/users",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update User",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Validate Users response Structure\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"    pm.response.to.be.json;\r",
+													"\r",
+													"    let jsonData = pm.response.json();\r",
+													"\r",
+													"        pm.expect(jsonData).to.have.property(\"email\").that.is.a(\"string\");\r",
+													"        pm.expect(jsonData).to.have.property(\"username\").that.is.a(\"string\");\r",
+													"        pm.expect(jsonData).to.have.property(\"password\").that.is.a(\"string\");\r",
+													"        pm.expect(jsonData).to.have.property(\"phone\").that.is.a(\"string\");\r",
+													"\r",
+													"        pm.expect(jsonData).to.have.property(\"name\").that.is.an(\"object\");\r",
+													"        pm.expect(jsonData.name).to.have.property(\"firstname\").that.is.a(\"string\");\r",
+													"        pm.expect(jsonData.name).to.have.property(\"lastname\").that.is.a(\"string\");\r",
+													"\r",
+													"        pm.expect(jsonData).to.have.property(\"address\").that.is.an(\"object\");\r",
+													"        pm.expect(jsonData.address).to.have.property(\"city\").that.is.a(\"string\");\r",
+													"        pm.expect(jsonData.address).to.have.property(\"street\").that.is.a(\"string\");\r",
+													"        pm.expect(jsonData.address).to.have.property(\"number\").that.is.a(\"number\");\r",
+													"        pm.expect(jsonData.address).to.have.property(\"zipcode\").that.is.a(\"string\");\r",
+													"\r",
+													"        pm.expect(jsonData.address).to.have.property(\"geolocation\").that.is.an(\"object\");\r",
+													"        pm.expect(jsonData.address.geolocation).to.have.property(\"lat\").that.is.a(\"string\");\r",
+													"        pm.expect(jsonData.address.geolocation).to.have.property(\"long\").that.is.a(\"string\");\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"John@gmail.com\",\r\n    \"username\": \"johnd\",\r\n    \"password\": \"m38rmF$\",\r\n    \"name\": {\r\n        \"firstname\": \"John\",\r\n        \"lastname\": \"Doe\"\r\n    },\r\n    \"address\": {\r\n        \"city\": \"kilcoole\",\r\n        \"street\": \"7835 new road\",\r\n        \"number\": 3,\r\n        \"zipcode\": \"12926-3874\",\r\n        \"geolocation\": {\r\n            \"lat\": \"-37.3159\",\r\n            \"long\": \"81.1496\"\r\n        }\r\n    },\r\n    \"phone\": \"1-570-236-7033\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/users/{{createdUser}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"{{createdUser}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete User",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Validate Users response Structure\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/users/{{createdUser}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"{{createdUser}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get All Users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Validate Users response Structure\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"    let jsonData = pm.response.json();\r",
+											"\r",
+											"    pm.expect(jsonData).to.be.an('array');\r",
+											"    pm.expect(jsonData.length).to.be.greaterThan(0);\r",
+											"\r",
+											"    jsonData.forEach(user => {\r",
+											"        pm.expect(user).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(user).to.have.property(\"email\").that.is.a(\"string\");\r",
+											"        pm.expect(user).to.have.property(\"username\").that.is.a(\"string\");\r",
+											"        pm.expect(user).to.have.property(\"password\").that.is.a(\"string\");\r",
+											"        pm.expect(user).to.have.property(\"phone\").that.is.a(\"string\");\r",
+											"        pm.expect(user).to.have.property(\"__v\").that.is.a(\"number\");\r",
+											"\r",
+											"        pm.expect(user).to.have.property(\"name\").that.is.an(\"object\");\r",
+											"        pm.expect(user.name).to.have.property(\"firstname\").that.is.a(\"string\");\r",
+											"        pm.expect(user.name).to.have.property(\"lastname\").that.is.a(\"string\");\r",
+											"\r",
+											"        pm.expect(user).to.have.property(\"address\").that.is.an(\"object\");\r",
+											"        pm.expect(user.address).to.have.property(\"city\").that.is.a(\"string\");\r",
+											"        pm.expect(user.address).to.have.property(\"street\").that.is.a(\"string\");\r",
+											"        pm.expect(user.address).to.have.property(\"number\").that.is.a(\"number\");\r",
+											"        pm.expect(user.address).to.have.property(\"zipcode\").that.is.a(\"string\");\r",
+											"\r",
+											"        pm.expect(user.address).to.have.property(\"geolocation\").that.is.an(\"object\");\r",
+											"        pm.expect(user.address.geolocation).to.have.property(\"lat\").that.is.a(\"string\");\r",
+											"        pm.expect(user.address.geolocation).to.have.property(\"long\").that.is.a(\"string\");\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Save email, username and password of the first two users\", function () {\r",
+											"    let jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData).to.be.an('array').that.is.not.empty;\r",
+											"\r",
+											"    for (let i = 0; i < Math.min(2, jsonData.length); i++) {\r",
+											"        pm.environment.set(`user${i+1}_email`, jsonData[i].email);\r",
+											"        pm.environment.set(`user${i+1}_username`, jsonData[i].username);\r",
+											"        pm.environment.set(`user${i+1}_password`, jsonData[i].password);\r",
+											"    }\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a Single User ( 1 to 5 )",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Validate Users response Structure\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"    let jsonData = pm.response.json();\r",
+											"\r",
+											"        pm.expect(jsonData).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(jsonData).to.have.property(\"email\").that.is.a(\"string\");\r",
+											"        pm.expect(jsonData).to.have.property(\"username\").that.is.a(\"string\");\r",
+											"        pm.expect(jsonData).to.have.property(\"password\").that.is.a(\"string\");\r",
+											"        pm.expect(jsonData).to.have.property(\"phone\").that.is.a(\"string\");\r",
+											"        pm.expect(jsonData).to.have.property(\"__v\").that.is.a(\"number\");\r",
+											"\r",
+											"        pm.expect(jsonData).to.have.property(\"name\").that.is.an(\"object\");\r",
+											"        pm.expect(jsonData.name).to.have.property(\"firstname\").that.is.a(\"string\");\r",
+											"        pm.expect(jsonData.name).to.have.property(\"lastname\").that.is.a(\"string\");\r",
+											"\r",
+											"        pm.expect(jsonData).to.have.property(\"address\").that.is.an(\"object\");\r",
+											"        pm.expect(jsonData.address).to.have.property(\"city\").that.is.a(\"string\");\r",
+											"        pm.expect(jsonData.address).to.have.property(\"street\").that.is.a(\"string\");\r",
+											"        pm.expect(jsonData.address).to.have.property(\"number\").that.is.a(\"number\");\r",
+											"        pm.expect(jsonData.address).to.have.property(\"zipcode\").that.is.a(\"string\");\r",
+											"\r",
+											"        pm.expect(jsonData.address).to.have.property(\"geolocation\").that.is.an(\"object\");\r",
+											"        pm.expect(jsonData.address.geolocation).to.have.property(\"lat\").that.is.a(\"string\");\r",
+											"        pm.expect(jsonData.address.geolocation).to.have.property(\"long\").that.is.a(\"string\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"randomNumber\", Math.floor(Math.random() * 5) + 1);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/{{randomNumber}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"{{randomNumber}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Users Results by limits",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Validate Users response Structure\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"    let jsonData = pm.response.json();\r",
+											"\r",
+											"    pm.expect(jsonData).to.be.an('array');\r",
+											"    pm.expect(jsonData.length).to.be.greaterThan(0);\r",
+											"\r",
+											"    jsonData.forEach(user => {\r",
+											"        pm.expect(user).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(user).to.have.property(\"email\").that.is.a(\"string\");\r",
+											"        pm.expect(user).to.have.property(\"username\").that.is.a(\"string\");\r",
+											"        pm.expect(user).to.have.property(\"password\").that.is.a(\"string\");\r",
+											"        pm.expect(user).to.have.property(\"phone\").that.is.a(\"string\");\r",
+											"        pm.expect(user).to.have.property(\"__v\").that.is.a(\"number\");\r",
+											"\r",
+											"        pm.expect(user).to.have.property(\"name\").that.is.an(\"object\");\r",
+											"        pm.expect(user.name).to.have.property(\"firstname\").that.is.a(\"string\");\r",
+											"        pm.expect(user.name).to.have.property(\"lastname\").that.is.a(\"string\");\r",
+											"\r",
+											"        pm.expect(user).to.have.property(\"address\").that.is.an(\"object\");\r",
+											"        pm.expect(user.address).to.have.property(\"city\").that.is.a(\"string\");\r",
+											"        pm.expect(user.address).to.have.property(\"street\").that.is.a(\"string\");\r",
+											"        pm.expect(user.address).to.have.property(\"number\").that.is.a(\"number\");\r",
+											"        pm.expect(user.address).to.have.property(\"zipcode\").that.is.a(\"string\");\r",
+											"\r",
+											"        pm.expect(user.address).to.have.property(\"geolocation\").that.is.an(\"object\");\r",
+											"        pm.expect(user.address.geolocation).to.have.property(\"lat\").that.is.a(\"string\");\r",
+											"        pm.expect(user.address.geolocation).to.have.property(\"long\").that.is.a(\"string\");\r",
+											"    });\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"limits\", Math.floor(Math.random() * 7) + 1);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users?limist={{limits}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									],
+									"query": [
+										{
+											"key": "limist",
+											"value": "{{limits}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Users by limits & asc Sort",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Validate Users response Structure\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"    let jsonData = pm.response.json();\r",
+											"\r",
+											"    pm.expect(jsonData).to.be.an('array');\r",
+											"    pm.expect(jsonData.length).to.be.greaterThan(0);\r",
+											"\r",
+											"    jsonData.forEach(user => {\r",
+											"        pm.expect(user).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(user).to.have.property(\"email\").that.is.a(\"string\");\r",
+											"        pm.expect(user).to.have.property(\"username\").that.is.a(\"string\");\r",
+											"        pm.expect(user).to.have.property(\"password\").that.is.a(\"string\");\r",
+											"        pm.expect(user).to.have.property(\"phone\").that.is.a(\"string\");\r",
+											"        pm.expect(user).to.have.property(\"__v\").that.is.a(\"number\");\r",
+											"\r",
+											"        pm.expect(user).to.have.property(\"name\").that.is.an(\"object\");\r",
+											"        pm.expect(user.name).to.have.property(\"firstname\").that.is.a(\"string\");\r",
+											"        pm.expect(user.name).to.have.property(\"lastname\").that.is.a(\"string\");\r",
+											"\r",
+											"        pm.expect(user).to.have.property(\"address\").that.is.an(\"object\");\r",
+											"        pm.expect(user.address).to.have.property(\"city\").that.is.a(\"string\");\r",
+											"        pm.expect(user.address).to.have.property(\"street\").that.is.a(\"string\");\r",
+											"        pm.expect(user.address).to.have.property(\"number\").that.is.a(\"number\");\r",
+											"        pm.expect(user.address).to.have.property(\"zipcode\").that.is.a(\"string\");\r",
+											"\r",
+											"        pm.expect(user.address).to.have.property(\"geolocation\").that.is.an(\"object\");\r",
+											"        pm.expect(user.address.geolocation).to.have.property(\"lat\").that.is.a(\"string\");\r",
+											"        pm.expect(user.address.geolocation).to.have.property(\"long\").that.is.a(\"string\");\r",
+											"    });\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"limits\", Math.floor(Math.random() * 7) + 1);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users?limist={{limits}}&sort={{asc-sort}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									],
+									"query": [
+										{
+											"key": "limist",
+											"value": "{{limits}}"
+										},
+										{
+											"key": "sort",
+											"value": "{{asc-sort}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Users by limits & desc sort",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Validate Users response Structure\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"    let jsonData = pm.response.json();\r",
+											"\r",
+											"    pm.expect(jsonData).to.be.an('array');\r",
+											"    pm.expect(jsonData.length).to.be.greaterThan(0);\r",
+											"\r",
+											"    jsonData.forEach(user => {\r",
+											"        pm.expect(user).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(user).to.have.property(\"email\").that.is.a(\"string\");\r",
+											"        pm.expect(user).to.have.property(\"username\").that.is.a(\"string\");\r",
+											"        pm.expect(user).to.have.property(\"password\").that.is.a(\"string\");\r",
+											"        pm.expect(user).to.have.property(\"phone\").that.is.a(\"string\");\r",
+											"        pm.expect(user).to.have.property(\"__v\").that.is.a(\"number\");\r",
+											"\r",
+											"        pm.expect(user).to.have.property(\"name\").that.is.an(\"object\");\r",
+											"        pm.expect(user.name).to.have.property(\"firstname\").that.is.a(\"string\");\r",
+											"        pm.expect(user.name).to.have.property(\"lastname\").that.is.a(\"string\");\r",
+											"\r",
+											"        pm.expect(user).to.have.property(\"address\").that.is.an(\"object\");\r",
+											"        pm.expect(user.address).to.have.property(\"city\").that.is.a(\"string\");\r",
+											"        pm.expect(user.address).to.have.property(\"street\").that.is.a(\"string\");\r",
+											"        pm.expect(user.address).to.have.property(\"number\").that.is.a(\"number\");\r",
+											"        pm.expect(user.address).to.have.property(\"zipcode\").that.is.a(\"string\");\r",
+											"\r",
+											"        pm.expect(user.address).to.have.property(\"geolocation\").that.is.an(\"object\");\r",
+											"        pm.expect(user.address.geolocation).to.have.property(\"lat\").that.is.a(\"string\");\r",
+											"        pm.expect(user.address.geolocation).to.have.property(\"long\").that.is.a(\"string\");\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"limits\", Math.floor(Math.random() * 7) + 1);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users?limist={{limits}}&sort={{desc-sort}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									],
+									"query": [
+										{
+											"key": "limist",
+											"value": "{{limits}}"
+										},
+										{
+											"key": "sort",
+											"value": "{{desc-sort}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Required Test Cases",
+			"item": [
+				{
+					"name": "1. See all products in the \"electronics\" category.",
+					"item": [
+						{
+							"name": "Get products in Electronics Category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"The Status returned code should be 200 and contains an array of Categories\", function () {\r",
+											"    pm.response.to.have.status(200); \r",
+											"    pm.response.to.be.json; \r",
+											"\r",
+											"    let productsResponseData = pm.response.json();\r",
+											"\r",
+											"    pm.expect(productsResponseData).to.be.an('array');\r",
+											"    pm.expect(productsResponseData.length).to.be.greaterThan(0);\r",
+											"\r",
+											"        productsResponseData.forEach(item => {\r",
+											"        pm.expect(item).to.be.an('object');\r",
+											"        pm.expect(item).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"title\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"price\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"description\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"category\").that.is.a(\"string\").and.to.equal(\"electronics\");\r",
+											"        pm.expect(item).to.have.property(\"image\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"rating\").that.is.an(\"object\");\r",
+											"\r",
+											"        pm.expect(item.rating).to.have.property(\"rate\").that.is.a(\"number\");\r",
+											"        pm.expect(item.rating).to.have.property(\"count\").that.is.a(\"number\");\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/products/category/{{category_electronics}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products",
+										"category",
+										"{{category_electronics}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "2. Consult the data of a specific product.",
+					"item": [
+						{
+							"name": "Get a Single Product ( 1 to 5 )",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let productsResponseData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"    pm.expect(productsResponseData).to.be.an('object');\r",
+											"\r",
+											"        pm.expect(productsResponseData).to.be.an('object');\r",
+											"        pm.expect(productsResponseData).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(productsResponseData).to.have.property(\"title\").that.is.a(\"string\");\r",
+											"        pm.expect(productsResponseData).to.have.property(\"price\").that.is.a(\"number\");\r",
+											"        pm.expect(productsResponseData).to.have.property(\"description\").that.is.a(\"string\");\r",
+											"        pm.expect(productsResponseData).to.have.property(\"category\").that.is.a(\"string\");\r",
+											"        pm.expect(productsResponseData).to.have.property(\"image\").that.is.a(\"string\");\r",
+											"        pm.expect(productsResponseData).to.have.property(\"rating\").that.is.an(\"object\");\r",
+											"\r",
+											"        pm.expect(productsResponseData.rating).to.have.property(\"rate\").that.is.a(\"number\");\r",
+											"        pm.expect(productsResponseData.rating).to.have.property(\"count\").that.is.a(\"number\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"randomNumber\", Math.floor(Math.random() * 5) + 1);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/products/{{randomNumber}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products",
+										"{{randomNumber}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "3. Create a new Product",
+					"item": [
+						{
+							"name": "Post new product",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let productsResponseData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"    pm.expect(productsResponseData).to.be.an('object');\r",
+											"        pm.expect(productsResponseData).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(productsResponseData).to.have.property(\"title\").that.is.a(\"string\");\r",
+											"        pm.expect(productsResponseData).to.have.property(\"price\").that.is.a(\"number\");\r",
+											"        pm.expect(productsResponseData).to.have.property(\"description\").that.is.a(\"string\");\r",
+											"        pm.expect(productsResponseData).to.have.property(\"category\").that.is.a(\"string\");\r",
+											"        pm.expect(productsResponseData).to.have.property(\"image\").that.is.a(\"string\");\r",
+											"});\r",
+											"\r",
+											"var uuid = productsResponseData.id;\r",
+											"\r",
+											"// environment variable\"\r",
+											"pm.environment.set('createdProductId', uuid);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"blue silk shirt\",\r\n    \"price\": 100.5,\r\n    \"description\": \"lorem ipsum set\",\r\n    \"image\": \"https://i.pravatar.cc\",\r\n    \"category\": \"men's clothing\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/products",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete product",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"The Status returned code should be 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"test product\",\r\n    \"price\": 13.5,\r\n    \"description\": \"lorem ipsum set\",\r\n    \"image\": \"https://i.pravatar.cc\",\r\n    \"category\": \"electronic\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/products/{{createdProductId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products",
+										"{{createdProductId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "4. Update a created product Image",
+					"item": [
+						{
+							"name": "Add/Update/delete Products Copy",
+							"item": [
+								{
+									"name": "Post new product",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"let productsResponseData = pm.response.json()\r",
+													"\r",
+													"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"    pm.response.to.be.json;\r",
+													"\r",
+													"    pm.expect(productsResponseData).to.be.an('object');\r",
+													"        pm.expect(productsResponseData).to.have.property(\"id\").that.is.a(\"number\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"title\").that.is.a(\"string\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"price\").that.is.a(\"number\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"description\").that.is.a(\"string\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"category\").that.is.a(\"string\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"image\").that.is.a(\"string\");\r",
+													"});\r",
+													"\r",
+													"var uuid = productsResponseData.id;\r",
+													"\r",
+													"// environment variable\"\r",
+													"pm.environment.set('createdProductId', uuid);\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"title\": \"QA test product - 001\",\r\n    \"price\": 150.5,\r\n    \"description\": \"Test product\",\r\n    \"image\": \"https://i.pravatar.cc\",\r\n    \"category\": \"electronic\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/products",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"products"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update product",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"let productsResponseData = pm.response.json()\r",
+													"\r",
+													"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"    pm.response.to.be.json;\r",
+													"\r",
+													"    pm.expect(productsResponseData).to.be.an('object');\r",
+													"        pm.expect(productsResponseData).to.have.property(\"id\").that.is.a(\"number\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"title\").that.is.a(\"string\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"price\").that.is.a(\"number\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"description\").that.is.a(\"string\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"category\").that.is.a(\"string\");\r",
+													"        pm.expect(productsResponseData).to.have.property(\"image\").that.is.a(\"string\");\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"title\": \"QA test product - 002\",\r\n    \"price\": 130.5,\r\n    \"description\": \"Updated Image\",\r\n    \"image\": \"https://example.com/test.jpg\",\r\n    \"category\": \"electronic\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/products/{{createdProductId}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"products",
+												"{{createdProductId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete product",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"The Status returned code should be 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"title\": \"test product\",\r\n    \"price\": 13.5,\r\n    \"description\": \"lorem ipsum set\",\r\n    \"image\": \"https://i.pravatar.cc\",\r\n    \"category\": \"electronic\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/products/{{createdProductId}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"products",
+												"{{createdProductId}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "5. Eliminate products with a price less than 100.",
+					"item": [
+						{
+							"name": "Get all product prices and filter them",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let productsResponseData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"The Status returned code should be 200 and contains an array of products\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.be.json;\r",
+											"\r",
+											"    pm.expect(productsResponseData).to.be.an('array');\r",
+											"    pm.expect(productsResponseData.length).to.be.greaterThan(0);\r",
+											"\r",
+											"    productsResponseData.forEach(item => {\r",
+											"        pm.expect(item).to.be.an('object');\r",
+											"        pm.expect(item).to.have.property(\"id\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"title\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"price\").that.is.a(\"number\");\r",
+											"        pm.expect(item).to.have.property(\"description\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"category\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"image\").that.is.a(\"string\");\r",
+											"        pm.expect(item).to.have.property(\"rating\").that.is.an(\"object\");\r",
+											"\r",
+											"        pm.expect(item.rating).to.have.property(\"rate\").that.is.a(\"number\");\r",
+											"        pm.expect(item.rating).to.have.property(\"count\").that.is.a(\"number\");\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											"let lowPriceProducts = productsResponseData.filter(product => product.price < 100);\r",
+											"pm.environment.set(\"lowPriceProducts\", JSON.stringify(lowPriceProducts.map(p => p.id)));\r",
+											"\r",
+											"console.log(\"Productos a eliminar: \", lowPriceProducts);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/products",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete products based on prices less than 100",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"The Status returned code should be 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let productList = pm.environment.get(\"lowPriceProducts\");\r",
+											"\r",
+											"if (productList) {\r",
+											"    let products = JSON.parse(productList);\r",
+											"    \r",
+											"    if (products.length > 0) {\r",
+											"        let productId = products.shift();\r",
+											"        \r",
+											"        pm.environment.set(\"productId\", productId);\r",
+											"        pm.environment.set(\"lowPriceProducts\", JSON.stringify(products));\r",
+											"    } else {\r",
+											"        pm.environment.unset(\"lowPriceProducts\");\r",
+											"    }\r",
+											"}\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/products/{{productId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products",
+										"{{productId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
