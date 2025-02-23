@@ -36,4 +36,4 @@ jobs:
         uses: actions/upload-artifact@v4 
         with:
           name: postman-test-results
-          path: ls -l results.xml
+          path: ./results.xml 
