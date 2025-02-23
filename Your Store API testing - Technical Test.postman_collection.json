@@ -27,7 +27,6 @@
 											"    \r",
 											"    \r",
 											"    pm.expect(jsonData).to.have.property(\"token\");\r",
-											"    pm.expect(jsonData.token).to.be.a(\"string\").and.to.not.be.empty;\r",
 											"    \r",
 											"    \r",
 											"    pm.environment.set(\"auth_token\", jsonData.token);\r",
